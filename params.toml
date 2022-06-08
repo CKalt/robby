@@ -1,0 +1,28 @@
+[run]
+num_runs = 1
+num_generations = 500
+selection_method = "pure rank"
+pop_size = 200
+crom_lenth = 243
+mutation_rate = 0.005
+crossover_sites	= 1
+crossover_rate = 1.0
+rank_max_weight = 2.0
+sigma_scaling_max_weight = 1.5
+num_elite = 50
+
+[io]
+run_num_dir = ""
+output_dir = ""
+snapshot_interval = 1
+short_print = true
+long_print = false
+best_print = true
+
+[fitness]
+fitness_function_name = "RobbyTheRobot"
+wall_penalty = -5
+can_reward = 10
+can_penalty = -1
+num_moves = 200
+num_environments_for_fitness = 200
