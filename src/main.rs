@@ -1,3 +1,7 @@
+mod params;
+use params::Params;
+
 fn main() {
-    println!("Hello, world!");
+    let params = Params::new();
+    println!("params = {:?}", params);
 }

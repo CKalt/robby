@@ -6,6 +6,9 @@
 //*                                                                         */
 //***************************************************************************/
 
+use serde::Deserialize;
+
+/*
 enum SelectionMethod {
     FitnessProportionate, 
     LinearRank, 
@@ -13,7 +16,10 @@ enum SelectionMethod {
     SigmaScaling,
     Elite,
 }
+*/
 
+#[derive(Deserialize, Debug)]
+#[allow(dead_code)]
 pub struct RunParams { 
     // Experiment parameters
     num_runs:   i64,
@@ -34,6 +40,8 @@ pub struct RunParams {
     num_elite:          f64, // fill in if selection method is "elite" 
 }
 
+#[derive(Deserialize, Debug)]
+#[allow(dead_code)]
 pub struct IOParams { 
     run_num_dir: String,
     output_dir: String,
@@ -43,6 +51,8 @@ pub struct IOParams {
     best_print:    bool,
 }
 
+#[derive(Deserialize, Debug)]
+#[allow(dead_code)]
 pub struct FitnessParams { 
     fitness_function_name: String,
     wall_penalty: i64, // Points lost for crashing into a wall
@@ -54,9 +64,16 @@ pub struct FitnessParams {
 				  //# calculating fitness
 }
 
+#[derive(Deserialize, Debug)]
+#[allow(dead_code)]
 pub struct Params {
     pub run: RunParams,
     pub io: IOParams,
     pub fitness: FitnessParams,
 }
-
+impl Params {
+    pub fn new() -> Self {
+        let params_text = std::fs::read_to_string("params.toml").unwrap();
+        toml::from_str(&params_text).unwrap()
+    }
+}
