@@ -39,6 +39,11 @@ pub struct RunParams {
     sigma_scaling_max_weight: f64, // Maximum weight for sigma scaling 
     num_elite:          f64, // fill in if selection method is "elite" 
 }
+impl RunParams {
+    pub fn get_num_runs(&self) -> i64 { 
+        self.num_runs 
+    }
+}
 
 #[derive(Deserialize, Debug)]
 #[allow(dead_code)]

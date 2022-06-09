@@ -10,4 +10,9 @@ fn main() {
 
     let opt = Opt::new();
     println!("opt = {:?}", opt);
+    println!("num_runs = {}", params.run.get_num_runs());
+
+    for i in 0..params.run.get_num_runs() {
+        println!("i={}", i);
+    }
 }
