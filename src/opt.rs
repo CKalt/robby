@@ -5,10 +5,10 @@ use structopt::StructOpt;
 #[allow(dead_code)]
 pub struct Opt {
     #[structopt(short = "r", long = "file-name")]
-    file_name: Option<String>,
+    pub file_name: Option<String>,
 
     #[structopt(short = "s", long = "seed")]
-    seed: Option<u64>,
+    pub seed: Option<u64>,
 }
 
 impl Opt {
