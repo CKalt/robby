@@ -77,8 +77,18 @@ pub struct Params {
     pub fitness: FitnessParams,
 }
 impl Params {
-    pub fn new() -> Self {
-        let params_text = std::fs::read_to_string("params.toml").unwrap();
-        toml::from_str(&params_text).unwrap()
+    pub fn new() -> Result<Self, std::io::Error> {
+        // location of params.toml is always parent
+        // to target directory where executable lives
+        let exe = std::env::current_exe()?;
+        let dir = exe.parent().expect(
+            "Executable must be in some directory");
+        let mut file_path = dir.join("");
+        file_path.pop();    // remove exe file
+        file_path.pop();    // remove target path
+        file_path.push("params.toml"); // add file name
+
+        let params_text = std::fs::read_to_string(file_path).unwrap();
+        Ok(toml::from_str(&params_text)?)
     }
 }

@@ -1,7 +1,9 @@
 mod params;
 mod opt;
 mod srand;
+mod error;
 
+use error::AppError;
 use params::Params;
 
 use opt::Opt;
@@ -9,8 +11,8 @@ use opt::Opt;
 use rand::prelude::*;
 use crate::srand::RngFactory;
 
-fn main() {
-    let params = Params::new();
+fn main() -> Result<(), AppError> {
+    let params = Params::new()?;
     println!("params = {:?}", params);
 
     let opt = Opt::new();
@@ -26,4 +28,5 @@ fn main() {
     let n_u8: u8 = srng.gen();
     println!("ChaChaRng Seeded Random Test Passed u8: {}", n_u8);
 
+    Ok(())
 }
