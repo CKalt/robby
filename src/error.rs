@@ -23,6 +23,15 @@ impl From<io::Error> for AppError {
     }
 }
 
+impl From<Box<dyn std::error::Error>> for AppError {
+    fn from(error: Box<dyn std::error::Error>) -> Self {
+        AppError {
+            kind: String::from("Box<dyn std::error::Error>"),
+            message: error.to_string(),
+        }
+    }
+}
+
 /*
 // Implement std::convert::From for AppError; from csv::Error
 impl From<csv::Error> for AppError {

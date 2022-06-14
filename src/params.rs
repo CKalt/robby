@@ -7,6 +7,8 @@
 //***************************************************************************/
 
 use serde::Deserialize;
+use std::io::Error;
+use std::path::PathBuf;
 
 /*
 enum SelectionMethod {
@@ -77,7 +79,7 @@ pub struct Params {
     pub fitness: FitnessParams,
 }
 impl Params {
-    pub fn new() -> Result<Self, std::io::Error> {
+    pub fn new() -> Result<Self, Error> {
         // location of params.toml is always parent
         // to target directory where executable lives
         let exe = std::env::current_exe()?;
@@ -90,5 +92,20 @@ impl Params {
 
         let params_text = std::fs::read_to_string(file_path).unwrap();
         Ok(toml::from_str(&params_text)?)
+    }
+    /// fn home_path returns abs path to file_name located in Cargo project 
+    /// home directory, assuming Cargo type project such that
+    /// executable file (i.e. std::env::current_exe() )
+    /// resides in grandchild of home path.
+    pub fn home_path(file_name: &str) -> Result<PathBuf, Error> {
+        let exe = std::env::current_exe()?;
+        let dir = exe.parent().expect(
+            "Executable must be in some directory");
+        let mut file_path = dir.join("");
+        file_path.pop();    // remove exe dir (i.e. debug or release)
+        file_path.pop();   // remove target dir
+        file_path.push(file_name); // add file name
+        println!("home_path: {}", file_path.display());
+        Ok(file_path)
     }
 }

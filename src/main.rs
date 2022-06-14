@@ -2,6 +2,7 @@ mod params;
 mod opt;
 mod srand;
 mod error;
+mod serial;
 
 use error::AppError;
 use params::Params;
@@ -27,6 +28,9 @@ fn main() -> Result<(), AppError> {
     let mut srng = RngFactory::new(seed);
     let n_u8: u8 = srng.gen();
     println!("ChaChaRng Seeded Random Test Passed u8: {}", n_u8);
+
+    let run_num = serial::serial_num()?;
+    println!("run_num = {}", run_num);
 
     Ok(())
 }
