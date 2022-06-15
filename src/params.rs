@@ -105,7 +105,6 @@ impl Params {
         file_path.pop();    // remove exe dir (i.e. debug or release)
         file_path.pop();   // remove target dir
         file_path.push(file_name); // add file name
-        println!("home_path: {}", file_path.display());
         Ok(file_path)
     }
 }
