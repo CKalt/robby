@@ -7,8 +7,11 @@
 //***************************************************************************/
 
 use serde::Deserialize;
+use std::io::Write;
 use std::io::Error;
 use std::path::PathBuf;
+use std::fs::File;
+use crate::opt::Opt;
 
 /*
 enum SelectionMethod {
@@ -79,6 +82,46 @@ pub struct Params {
     pub fitness: FitnessParams,
 }
 impl Params {
+    pub fn write_header(&self, opt: &Opt, run_num: i32) -> Result<(), Error> {
+        let header = format!(r#"
+# RUN NUMBER: {}
+# RANDOM SEED: {:?}
+# FITNESS FUNCTION: {}
+"#,
+        run_num,
+        opt.seed,
+        self.fitness.fitness_function_name);
+
+        /*
+
+# NUM ENVIRONMENT ROWS: {}
+# NUM ENVIRONMENT COLUMNS: {}
+# WALL_PENALTY: {}
+# CAN_REWARD: {}
+# CAN_PENALTY: {}
+# NUM_MOVES: {}
+# SELECTION METHOD: {}
+# CHROM LENGTH: {}
+# POPULATION SIZE: {}
+# NUM GENERATIONS: {}
+# CROSSOVER RATE: {}
+# MUTATION RATE: {}
+
+        */
+
+        let header_file = Params::home_path(&format!("{}.header", run_num))?;
+        let mut f = File::create(&header_file)
+                        .expect(
+                            &format!(
+                                "Unable to create header file ({})",
+                                header_file.display()));
+             // note: use of ugly unwrap_or_else & panic! rather than
+             // expect!() above avoids the cost of format unless it's needed.
+
+        f.write_all(header.as_bytes()).expect("Unable to write data");
+
+        Ok(())
+    }
     pub fn new() -> Result<Self, Error> {
         // location of params.toml is always parent
         // to target directory where executable lives
@@ -93,6 +136,7 @@ impl Params {
         let params_text = std::fs::read_to_string(file_path).unwrap();
         Ok(toml::from_str(&params_text)?)
     }
+
     /// fn home_path returns abs path to file_name located in Cargo project 
     /// home directory, assuming Cargo type project such that
     /// executable file (i.e. std::env::current_exe() )
