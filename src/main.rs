@@ -4,6 +4,8 @@ mod srand;
 mod error;
 mod serial;
 mod constants;
+mod runga;
+mod fitness;
 
 use serial::Serial;
 use error::AppError;
@@ -26,6 +28,8 @@ fn main() -> Result<(), AppError> {
         let mut _srng = RngFactory::new(opt.seed);
         let run_num = serial.bump()?;
         params.write_header(&opt, run_num)?;
+        fitness::init_fitness_function();
+        runga::runga();
     }
 
     Ok(())
