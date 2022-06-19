@@ -12,7 +12,7 @@ use std::io::Error;
 use std::path::PathBuf;
 use std::fs::File;
 use crate::opt::Opt;
-use crate::constants;
+use crate::app::constants;
 
 #[derive(Debug, PartialEq)]
 pub enum SelectionMethod {

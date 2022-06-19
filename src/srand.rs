@@ -52,13 +52,13 @@ mod tests {
         println!("ChaCha8Rng Seeded Random Test Passed float: {}\n\n", n_f64);
 
         /*
-        Expected output:
-            ChaCha8Rng Seeded Random Test Passed u8: 23
-            ChaCha8Rng Seeded Random Test Passed u16: 11108
-            ChaCha8Rng Seeded Random Test Passed u32: 2960706524
-            ChaCha8Rng Seeded Random Test Passed i32: -484573038
-            ChaCha8Rng Seeded Random Test Passed float: 0.3272060383192589
-*/
+            Expected output:
+                ChaCha8Rng Seeded Random Test Passed u8: 23
+                ChaCha8Rng Seeded Random Test Passed u16: 11108
+                ChaCha8Rng Seeded Random Test Passed u32: 2960706524
+                ChaCha8Rng Seeded Random Test Passed i32: -484573038
+                ChaCha8Rng Seeded Random Test Passed float: 0.3272060383192589
+        */
     }
 
     #[test]
@@ -82,7 +82,7 @@ mod tests {
         println!("ChaCha20Rng Seeded Random Test Passed u16: {}", n_u16);
         println!("ChaCha20Rng Seeded Random Test Passed u32: {}", n_u32); 
         println!("ChaCha20Rng Seeded Random Test Passed i32: {}", n_i32);
-        println!("ChaCha20Rng Seeded Random Test Passed float: {}\n\n", n_f64);
+        println!("ChaCha20Rng Seeded Random Test Passed float: {}", n_f64);
 
         /*
         Expected output:
