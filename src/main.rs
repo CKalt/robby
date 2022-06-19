@@ -3,7 +3,7 @@ mod opt;
 mod srand;
 mod error;
 mod serial;
-//mod const;
+mod constants;
 
 use serial::Serial;
 use error::AppError;
@@ -11,7 +11,6 @@ use params::Params;
 
 use opt::Opt;
 
-//use rand::prelude::*;
 use crate::srand::RngFactory;
 
 fn main() -> Result<(), AppError> {
@@ -28,8 +27,6 @@ fn main() -> Result<(), AppError> {
         let run_num = serial.bump()?;
         params.write_header(&opt, run_num)?;
     }
-
-    // println!("CONTROL_M={}", const::CONTROL_M);
 
     Ok(())
 }

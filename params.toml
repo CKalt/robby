@@ -1,6 +1,9 @@
 [run]
 num_runs = 1
 num_generations = 500
+
+# selection_method valid values:
+# elite | linear_rank | pure_rank | fitness_proportionate | sigma_scaling
 selection_method = "pure rank"
 pop_size = 200
 chrom_length = 243

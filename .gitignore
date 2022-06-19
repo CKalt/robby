@@ -1,0 +1,9 @@
+/target
+/logs
+*.log
+*.out
+*.tgz
+config.toml
+*.err
+*.pid
+run_num

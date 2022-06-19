@@ -12,16 +12,34 @@ use std::io::Error;
 use std::path::PathBuf;
 use std::fs::File;
 use crate::opt::Opt;
+use crate::constants;
 
-/*
-enum SelectionMethod {
+#[derive(Debug, PartialEq)]
+pub enum SelectionMethod {
     FitnessProportionate, 
-    LinearRank, 
+    LinearRank(f64),
     PureRank,
-    SigmaScaling,
-    Elite,
+    SigmaScaling(f64),
+    Elite(i64),
 }
-*/
+use SelectionMethod::*;
+
+use std::convert::From;
+
+impl From<&RunParams> for SelectionMethod {
+    fn from(run: &RunParams) -> Self {
+        match &run.selection_method[..] {
+            "elite" => SelectionMethod::FitnessProportionate,
+            "linear_rank" =>
+                SelectionMethod::LinearRank(run.rank_max_weight),
+            "pure_rank" => SelectionMethod::PureRank,
+            "fitness_proportionate" =>
+                SelectionMethod::SigmaScaling(run.sigma_scaling_max_weight),
+            "sigma_scaling" => SelectionMethod::Elite(run.num_elite),
+            _ => SelectionMethod::FitnessProportionate,
+        }
+    }
+}
 
 #[derive(Deserialize, Debug)]
 #[allow(dead_code)]
@@ -35,18 +53,21 @@ pub struct RunParams {
     // Options for selection_method are "fitness proportionate", "linear rank", "pure rank"
     // "sigma scaling", and "elite"
     selection_method:   String,
-    pop_size:           i64,
+    pop_size:           usize,
     chrom_length:       i64,
     mutation_rate:      f64, // probability of mutation at each locus in a chromosome
     crossover_sites:    i64,
     crossover_rate:     f64, // probability of two parents crossing over
     rank_max_weight:    f64, // Maximum weight for rank scaling 
     sigma_scaling_max_weight: f64, // Maximum weight for sigma scaling 
-    num_elite:          f64, // fill in if selection method is "elite" 
+    num_elite:          i64, // fill in if selection method is "elite" 
 }
 impl RunParams {
     pub fn get_num_runs(&self) -> i64 { 
         self.num_runs 
+    }
+    pub fn get_selection_method(&self) -> SelectionMethod {
+        SelectionMethod::from(self)
     }
 }
 
@@ -83,17 +104,12 @@ pub struct Params {
 }
 impl Params {
     pub fn write_header(&self, opt: &Opt, run_num: i32) -> Result<(), Error> {
-        let header = format!(r#"
+        let mut header = String::new();
+
+        header += &format!(r#"
 # RUN NUMBER: {}
 # RANDOM SEED: {:?}
 # FITNESS FUNCTION: {}
-"#,
-        run_num,
-        opt.seed,
-        self.fitness.fitness_function_name);
-
-        /*
-
 # NUM ENVIRONMENT ROWS: {}
 # NUM ENVIRONMENT COLUMNS: {}
 # WALL_PENALTY: {}
@@ -105,9 +121,36 @@ impl Params {
 # POPULATION SIZE: {}
 # NUM GENERATIONS: {}
 # CROSSOVER RATE: {}
-# MUTATION RATE: {}
+# MUTATION RATE: {}"#,
+        run_num,
+        opt.seed,
+        self.fitness.fitness_function_name,
+        constants::NUM_ENVIRONMENT_ROWS,
+        constants::NUM_ENVIRONMENT_COLUMNS,
+        constants::WALL_PENALTY,
+        constants::CAN_REWARD,
+        constants::CAN_PENALTY,
+        constants::NUM_MOVES,
+        self.run.selection_method,
+        self.run.chrom_length,
+        self.run.pop_size,
+        self.run.num_generations,
+        self.run.crossover_rate,
+        self.run.mutation_rate);
 
-        */
+        if let Elite(num) = self.run.get_selection_method() {
+            header += &format!("# NUM ELITE: {}\n", num)
+        } else if let LinearRank(max_weight) = self.run.get_selection_method() {
+            header += &format!("# RANK MAX WEIGHT: {}\n", max_weight)
+        } else if let SigmaScaling(max_weight) = self.run.get_selection_method() {
+            header += &format!("# SIGMA SCALING MAX WEIGHT: {}", max_weight)
+        }
+
+        header += &format!(r#"
+# CROSSOVER RATE: {}
+# MUTATION RATE: {}"#, 
+            self.run.crossover_rate,
+            self.run.mutation_rate);
 
         let header_file = Params::home_path(&format!("{}.header", run_num))?;
         let mut f = File::create(&header_file)
