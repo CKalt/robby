@@ -29,7 +29,7 @@ fn main() -> Result<(), AppError> {
         let run_num = serial.bump()?;
         params.write_header(&opt, run_num)?;
         fitness::init_fitness_function();
-        runga::runga();
+        runga::runga(&params);
     }
 
     Ok(())

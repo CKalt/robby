@@ -48,7 +48,7 @@ pub struct RunParams {
     num_runs:   i64,
 
     // GA parameters
-    num_generations:    i64,
+    pub num_generations:    i64,
 
     // Options for selection_method are "fitness proportionate", "linear rank", "pure rank"
     // "sigma scaling", and "elite"
