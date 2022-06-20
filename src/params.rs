@@ -53,8 +53,8 @@ pub struct RunParams {
     // Options for selection_method are "fitness proportionate", "linear rank", "pure rank"
     // "sigma scaling", and "elite"
     selection_method:   String,
-    pop_size:           usize,
-    chrom_length:       i64,
+    pub pop_size:       usize,
+    pub chrom_length:   i64,
     mutation_rate:      f64, // probability of mutation at each locus in a chromosome
     crossover_sites:    i64,
     crossover_rate:     f64, // probability of two parents crossing over

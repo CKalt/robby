@@ -5,6 +5,11 @@ use rand_chacha::ChaCha8Rng;
 #[cfg(opt_rng="ChaCha20Rng")]
 use rand_chacha::ChaCha20Rng;
 
+#[cfg(opt_rng="ChaCha8Rng")]
+pub type SRng = ChaCha8Rng;
+#[cfg(opt_rng="ChaCha20Rng")]
+pub type SRng = ChaCha20Rng;
+
 pub struct RngFactory;
 impl RngFactory {
     #[cfg(opt_rng="ChaCha8Rng")]

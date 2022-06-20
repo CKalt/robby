@@ -26,15 +26,15 @@ fn main() -> Result<(), AppError> {
     // println!("num_runs = {}", params.run.get_num_runs());
 
     let serial = Serial::new("run_num")?;
+    let mut srng = RngFactory::new(opt.seed);
     for _i in 0..params.run.get_num_runs() {
-        let mut srng = RngFactory::new(opt.seed);
         let action: Action = srng.gen();
         println!("Random Action = {:?}", action);
 
         let run_num = serial.bump()?;
         params.write_header(&opt, run_num)?;
         fitness::init_fitness_function();
-        runga::runga(&params);
+        runga::runga(&params, &mut srng);
     }
 
     Ok(())
