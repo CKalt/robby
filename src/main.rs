@@ -4,7 +4,6 @@ mod srand;
 mod error;
 mod serial;
 mod runga;
-mod fitness;
 mod app;
 
 use serial::Serial;
@@ -33,7 +32,7 @@ fn main() -> Result<(), AppError> {
 
         let run_num = serial.bump()?;
         params.write_header(&opt, run_num)?;
-        fitness::init_fitness_function();
+        app::fitness::init_fitness_function();
         runga::runga(&params, &mut srng);
     }
 

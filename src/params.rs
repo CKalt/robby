@@ -90,7 +90,7 @@ pub struct FitnessParams {
     can_reward: i64, // Points gained for picking up a can
     can_penalty: i64, // Points lost for trying to pick up a can in an empty cell 
     num_moves: i64, // Number of moves a robot makes per session 
-    num_environments_for_fitness: i64, // Number of environments each 
+    pub num_environments_for_fitness: i64, // Number of environments each 
 				  // individual is tested on for 
 				  //# calculating fitness
 }
