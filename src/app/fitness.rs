@@ -12,7 +12,7 @@ pub fn calc_fitness(prm: &Params, chrom: &mut Chromosome, chrom_num: usize,
                     srng: &mut SRng) -> f64 {
     let mut total_score = 0i64;
     for _environment_number in 1..=prm.fitness.num_environments_for_fitness {
-        total_score += calc_fitness_one_environment(chrom, chrom_num, srng);
+        total_score += calc_fitness_one_environment(prm, chrom, chrom_num, srng);
     }
 
     let fitness = total_score as f64 /
@@ -20,10 +20,30 @@ pub fn calc_fitness(prm: &Params, chrom: &mut Chromosome, chrom_num: usize,
     fitness
 }
 
-fn calc_fitness_one_environment(_chrom: &mut Chromosome,
+fn calc_fitness_one_environment(_prm: &Params, _chrom: &mut Chromosome,
         _chrom_num: usize, srng: &mut SRng) -> i64 {
     let _environment = Environment::new(srng);
-    // (UC)
+
+    /*
+    for move_number in 1..=prm.fitness.num_moves {
+        let mut state: u8 = 0;
+
+        let n
+
+
+
+    }
+    */
+
+
+
+
+
+
+
+
+
+
     0i64
 }
 
