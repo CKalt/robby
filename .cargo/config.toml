@@ -1,0 +1,5 @@
+# opt_rng := ChaCha8Rng | ChaCha20Rng
+[build]
+rustflags = """
+    --cfg opt_rng="ChaCha20Rng"
+"""
