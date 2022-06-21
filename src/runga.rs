@@ -53,8 +53,8 @@ pub fn runga(prm: &Params, srng: &mut SRng) {
 
         println!("Generation {}", current_generation);
 
-        for (i, current_chrom) in population.iter_mut().enumerate() {
-            calc_fitness(prm, current_chrom, i);
+        for (chrom_num, current_chrom) in population.iter_mut().enumerate() {
+            calc_fitness(prm, current_chrom, chrom_num, srng);
         }
     }
 }
