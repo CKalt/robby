@@ -6,7 +6,7 @@ use crate::app::{actions::Action, fitness::calc_fitness};
 #[allow(dead_code)]
 pub struct Chromosome {
     pub actions: Vec<Action>,
-    fitness: f64,
+    pub fitness: f64,
     weight: f64,
     generation: i32,
     id: i32,
@@ -84,8 +84,21 @@ impl Ga {
                     ) / (prm.run.pop_size as f64)
                 ).sqrt();
 
-//            sort_population();
+               self.fitness_std_dev = (
+                    (
+                       fitness_sum_squares -
+                       (fitness_sum * fitness_sum) / (prm.run.pop_size as f64))
+                        / (prm.run.pop_size as f64)
+                    ).sqrt();
+
+
+            self.sort_population();
         }
+    }
+
+    fn sort_population(&mut self) {
+        let pop = self.population.as_mut().unwrap();
+        pop.sort_by(|a, b| b.fitness.partial_cmp(&a.fitness).unwrap());
     }
 
     fn generate_population(&mut self, prm: &Params, srng: &mut SRng) {

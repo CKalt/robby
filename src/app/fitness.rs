@@ -15,9 +15,10 @@ pub fn calc_fitness(prm: &Params, chrom: &mut Chromosome, chrom_num: usize,
         total_score += calc_fitness_one_environment(prm, chrom, chrom_num, srng);
     }
 
-    let fitness = total_score as f64 /
+    chrom.fitness = total_score as f64 /
         prm.fitness.num_environments_for_fitness as f64;
-    fitness
+
+    chrom.fitness
 }
 
 fn calc_fitness_one_environment(_prm: &Params, _chrom: &mut Chromosome,
