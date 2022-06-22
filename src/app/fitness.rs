@@ -1,4 +1,4 @@
-use crate::runga::Chromosome;
+use crate::ga::Chromosome;
 use crate::params::Params;
 use crate::app::constants;
 use crate::srand::SRng;

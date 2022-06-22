@@ -3,7 +3,7 @@ mod opt;
 mod srand;
 mod error;
 mod serial;
-mod runga;
+mod ga;
 mod app;
 
 use serial::Serial;
@@ -33,7 +33,9 @@ fn main() -> Result<(), AppError> {
         let run_num = serial.bump()?;
         params.write_header(&opt, run_num)?;
         app::fitness::init_fitness_function();
-        runga::runga(&params, &mut srng);
+
+        let mut ga = ga::Ga::new();
+        ga.run(&params, &mut srng);
     }
 
     Ok(())
