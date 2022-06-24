@@ -29,13 +29,12 @@ use std::convert::From;
 impl From<&RunParams> for SelectionMethod {
     fn from(run: &RunParams) -> Self {
         match &run.selection_method[..] {
-            "elite" => SelectionMethod::FitnessProportionate,
-            "linear_rank" =>
-                SelectionMethod::LinearRank(run.rank_max_weight),
+            "elite" => SelectionMethod::Elite(run.num_elite),
+            "linear_rank" => SelectionMethod::LinearRank(run.rank_max_weight),
             "pure_rank" => SelectionMethod::PureRank,
-            "fitness_proportionate" =>
+            "fitness_proportionate" => SelectionMethod::FitnessProportionate,
+            "sigma_scaling" => 
                 SelectionMethod::SigmaScaling(run.sigma_scaling_max_weight),
-            "sigma_scaling" => SelectionMethod::Elite(run.num_elite),
             _ => SelectionMethod::FitnessProportionate,
         }
     }

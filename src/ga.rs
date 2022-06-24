@@ -2,6 +2,8 @@ use rand::Rng;
 use crate::params::Params;
 use crate::srand::SRng;
 use crate::app::{actions::Action, fitness::calc_fitness};
+use crate::params::SelectionMethod::{FitnessProportionate,
+    LinearRank, PureRank, SigmaScaling, Elite};
 
 #[allow(dead_code)]
 pub struct Chromosome {
@@ -37,7 +39,6 @@ impl Ga {
             population: None,
         }
     }
-
     pub fn run(&mut self, prm: &Params, srng: &mut SRng) {
         let mut fitness_sum: f64;
         let mut fitness_sum_squares: f64;
@@ -93,14 +94,27 @@ impl Ga {
 
 
             self.sort_population();
+
+            self.assign_weights_to_population(prm);
+
         }
     }
-
     fn sort_population(&mut self) {
         let pop = self.population.as_mut().unwrap();
         pop.sort_by(|a, b| b.fitness.partial_cmp(&a.fitness).unwrap());
     }
-
+    fn assign_weights_to_population(&mut self, prm: &Params) {
+        match prm.run.get_selection_method() {
+            FitnessProportionate =>
+                self.assign_fitness_proportionate_weights(),
+            LinearRank(max_weight) =>
+                self.assign_linear_rank_weights(max_weight),
+            PureRank => self.assign_pure_rank_weights(),
+            SigmaScaling(max_weight) =>
+                self.assign_sigma_scaling_weights(max_weight),
+            Elite(num_elite) => self.assign_elite_weights(num_elite),
+        }
+    }
     fn generate_population(&mut self, prm: &Params, srng: &mut SRng) {
         let mut current_pop: Population = Vec::new();
         for _i in 0..prm.run.pop_size {
@@ -112,6 +126,16 @@ impl Ga {
             current_pop.push(chroms);
         }
         self.population = Some(current_pop)
+    }
+    fn assign_fitness_proportionate_weights(&self) {
+    }
+    fn assign_linear_rank_weights(&self, _max_weight: f64) {
+    }
+    fn assign_pure_rank_weights(&self) {
+    }
+    fn assign_sigma_scaling_weights(&self, _max_weight: f64) {
+    }
+    fn assign_elite_weights(&self, _num_elite: i64) {
     }
 }
 
